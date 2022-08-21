@@ -81,8 +81,8 @@ var (
 )
 
 func init()  {
-	flag.StringVar(&srcFile, "s", "ipip_cn.txt", "specify source ip list file")
-	flag.StringVar(&dstFile, "d", "Country.mmdb", "specify destination mmdb file")
+	flag.StringVar(&srcFile, "s", "chnroutes.txt", "specify source ip list file")
+	flag.StringVar(&dstFile, "d", "chnroutes.mmdb", "specify destination mmdb file")
 	flag.StringVar(&databaseType,"t", "GeoIP2-Country", "specify MaxMind database type")
 	flag.Parse()
 }
