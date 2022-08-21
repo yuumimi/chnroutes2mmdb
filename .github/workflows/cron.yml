@@ -1,0 +1,34 @@
+name: Build chnroutes.mmdb
+on:
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.18
+
+    - name: Build chnroutes.mmdb
+      run: |
+        ./build.sh
+        wget -qO- https://raw.githubusercontent.com/misakaio/chnroutes2/master/chnroutes.txt | grep -v '#' > dist/chnroutes.txt
+        ./dist/ipip2mmdb -s ./dist/chnroutes.txt -d chnroutes.mmdb
+        mkdir release
+        mv chnroutes.mmdb ./release/chnroutes.mmdb
+        
+    - name: Deploy chnroutes.mmdb
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        branch: release
+        folder: release
